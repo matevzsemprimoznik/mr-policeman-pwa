@@ -1,4 +1,4 @@
-import express, {Router, Request, Response, NextFunction} from 'express';
+import express, { Router, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import settings from './common/settings/settings';
@@ -27,22 +27,22 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:${settings.port}`,
+        url: settings.selfUrl,
       },
     ],
     components: {
       securitySchemes: {
-          bearerAuth: {
-              type: 'http',
-              scheme: 'bearer',
-              bearerFormat: 'JWT',
-              value: 'Bearer sjdfhjdghkdfj',
-          },
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+          value: 'Bearer sjdfhjdghkdfj',
+        },
       },
     },
     security: [
       {
-          bearerAuth: [],
+        bearerAuth: [],
       },
     ],
   },
@@ -56,33 +56,41 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
-    cors({
-        allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
-        credentials: true,
-        origin: settings.clientUrl,
-    })
+  cors({
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Access-Control-Allow-Origin',
+    ],
+    credentials: true,
+    origin: settings.clientUrl,
+  })
 );
 
-app.use('/docs',  swaggerUi.serve, (req: Request, res: Response, next: NextFunction) => {
+app.use(
+  '/docs',
+  swaggerUi.serve,
+  (req: Request, res: Response, next: NextFunction) => {
     const swaggerOptions = {
-        swaggerOptions: {
-            authAction: {
-                bearerAuth: {
-                    name: 'bearerAuth',
-                    schema: {
-                        type: 'http',
-                        in: 'header',
-                        name: 'Authorization',
-                        scheme: 'bearer',
-                        bearerFormat: 'JWT',
-                    },
-                    value: req?.cookies?.access_token,
-                },
+      swaggerOptions: {
+        authAction: {
+          bearerAuth: {
+            name: 'bearerAuth',
+            schema: {
+              type: 'http',
+              in: 'header',
+              name: 'Authorization',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
             },
+            value: req?.cookies?.access_token,
+          },
         },
+      },
     };
     swaggerUi.setup(specs, swaggerOptions)(req, res, next);
-});
+  }
+);
 
 app.use(
   session({
