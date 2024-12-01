@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider';
 import { Theme } from '@radix-ui/themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from '@/components/ui/toaster';
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,6 +34,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <Script id="hotjar" strategy="beforeInteractive">
+          {`
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:5226601,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+          `}
+        </Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
