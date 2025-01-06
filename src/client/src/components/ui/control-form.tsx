@@ -18,9 +18,10 @@ import { Button } from '@/components/ui/button';
 interface ControlFormProps {
   latitude: number;
   longitude: number;
+  setModalOpen: (value: boolean) => void;
 }
 
-const ControlForm: FC<ControlFormProps> = ({ latitude, longitude }) => {
+const ControlForm: FC<ControlFormProps> = ({ latitude, longitude, setModalOpen }) => {
   const queryClient = useQueryClient();
   const { handleSubmit, register, setValue, formState, resetField } = useForm<Control>({
     defaultValues: {
@@ -55,7 +56,20 @@ const ControlForm: FC<ControlFormProps> = ({ latitude, longitude }) => {
         <DialogTitle>Dodaj novo policijsko kontrolo</DialogTitle>
         <DialogDescription>Vnesi podatke o novi policijski kontroli.</DialogDescription>
       </DialogHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className='mt-2'>
+        <Label htmlFor='latitude'>Koordinate</Label>
+        <div className='flex gap-2'>
+          <Input
+              placeholder={(latitude === 0 && longitude === 0) ? 'Prosimo izberite točko na zemljevidu' :latitude.toFixed(12) + ', ' + longitude.toFixed(12)}
+              type='text'
+              autoCapitalize='none'
+              autoCorrect='off'
+              autoComplete='off'
+              disabled
+              value={(latitude === 0 && longitude === 0) ? 'Prosimo izberite točko na zemljevidu' :latitude.toFixed(12) + ', ' + longitude.toFixed(12)}
+          />
+          <Button onClick={() => setModalOpen(false)} variant={"outline"}>Izberi</Button>
+        </div>
         <Label htmlFor="name">Ime kontolne točke</Label>
         <Input
           {...register('name')}
