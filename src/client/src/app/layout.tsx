@@ -9,6 +9,7 @@ import { Theme } from '@radix-ui/themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Toaster } from '@/components/ui/toaster';
 import Script from 'next/script'
+import { hotjar } from 'react-hotjar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
@@ -46,6 +48,12 @@ export default function RootLayout({
             })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
           `}
         </Script>
+          <Script id="hotjar-event" strategy="afterInteractive">
+            {`
+                console.log('Hotjar event listener', hj);
+                hj('event', window.location.href);
+            `}
+          </Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
