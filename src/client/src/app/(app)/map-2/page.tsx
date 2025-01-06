@@ -13,7 +13,6 @@ import { Radar } from '@/lib/types/radar-types';
 import RadarInformation from '@/components/ui/radar-information';
 import { useUserGeoLocation } from '@/lib/hooks/location';
 import { haversineDistanceBetweenPoints } from '@/lib/utils';
-import {Button} from "@/components/ui/button";
 import InfoModal from "@/components/ui/info-modal";
 
 const defaultCoordinatesValue = {
