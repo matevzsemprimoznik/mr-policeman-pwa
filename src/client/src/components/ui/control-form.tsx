@@ -18,7 +18,7 @@ import { Button } from '@/components/ui/button';
 interface ControlFormProps {
   latitude: number;
   longitude: number;
-  setModalOpen: (value: boolean) => void;
+  setModalOpen?: (value: boolean) => void;
 }
 
 const ControlForm: FC<ControlFormProps> = ({ latitude, longitude, setModalOpen }) => {
@@ -68,9 +68,9 @@ const ControlForm: FC<ControlFormProps> = ({ latitude, longitude, setModalOpen }
               disabled
               value={(latitude === 0 && longitude === 0) ? 'Prosimo izberite točko na zemljevidu' :latitude.toFixed(12) + ', ' + longitude.toFixed(12)}
           />
-          <Button onClick={() => setModalOpen(false)} variant={"outline"}>Izberi</Button>
+          {setModalOpen && <Button onClick={() => setModalOpen(false)} variant={"outline"}>Izberi</Button>}
         </div>
-        <Label htmlFor="name">Ime kontolne točke</Label>
+        <Label htmlFor="name">Ime kontrolne točke</Label>
         <Input
           {...register('name')}
           placeholder="Ime"
